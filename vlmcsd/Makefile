@@ -14,9 +14,12 @@ PKG_HASH:=62f55c48f5de1249c2348ab6b96dabbe7e38899230954b0c8774efb01d9c42cc
 
 PKG_BUILD_PARALLEL:=1
 
+PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
+
+
 include $(INCLUDE_DIR)/package.mk
 
-define Package/vlmcsd
+define Package/$(PKG_NAME)
 	SECTION:=net
 	CATEGORY:=Network
 	TITLE:=vlmcsd for OpenWRT
@@ -24,14 +27,18 @@ define Package/vlmcsd
 	DEPENDS:=+libpthread
 endef
 
-define Package/vlmcsd/description
+define Package/$(PKG_NAME)/conffiles
+	/etc/vlmcsd/vlmcsd.ini
+endef
+
+define Package/$(PKG_NAME)/description
 	vlmcsd is a KMS Emulator in C.
 endef
 
 MAKE_FLAGS += \
 	-C $(PKG_BUILD_DIR)
 
-define Package/vlmcsd/install
+define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bin/vlmcsd $(1)/usr/bin/vlmcsd
 	$(INSTALL_DIR) $(1)/etc/vlmcsd
